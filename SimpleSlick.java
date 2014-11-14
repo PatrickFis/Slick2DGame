@@ -38,7 +38,7 @@ public class SimpleSlick extends BasicGame
 	public void init(GameContainer gc) throws SlickException {
 		//		pokemon = new SpriteSheet("res/pokemon.png", 120, 176);
 		//		pokeAnimation = new Animation(pokemon, 100);
-		x = new Player(100, 100);
+		x = new Player(100, 100, 100);
 		circle = new Circle(xpos, ypos, radius);
 		rect = new Rectangle(rx, ry, rh, rw);
 	}
@@ -78,27 +78,17 @@ public class SimpleSlick extends BasicGame
 			if(ypos > 480) ypos = 0;
 			if(xpos < 0) xpos = 640;
 			if(ypos < 0) ypos = 480;
+			if(x.intersection(rect)) x.damage(1);
+			if(x.returnHealth() == 0) x.destroy();
 		}
 		else {
 			if(input.isKeyPressed(Input.KEY_ESCAPE)) {
 				gc.exit();
 			}
-			if(input.isKeyDown(Input.KEY_W)) {
-				circle.setY(ypos -= 10);
-				x.moveUp(10);
-			}
-			if(input.isKeyDown(Input.KEY_S)) {
-				circle.setY(ypos += 10);
-				x.moveDown(10);
-			}
-			if(input.isKeyDown(Input.KEY_A)) {
-				circle.setX(xpos -= 10);
-				x.moveLeft(10);
-			}
-			if(input.isKeyDown(Input.KEY_D)) {
-				circle.setX(xpos += 10);
-				x.moveRight(10);
-			}
+			if(input.isKeyDown(Input.KEY_W)) circle.setY(ypos -= 10);
+			if(input.isKeyDown(Input.KEY_S)) circle.setY(ypos += 10);
+			if(input.isKeyDown(Input.KEY_A)) circle.setX(xpos -= 10);
+			if(input.isKeyDown(Input.KEY_D)) circle.setX(xpos += 10);
 			if(input.isKeyDown(Input.KEY_Q)) circle.setRadius(radius += 10);
 			if(input.isKeyDown(Input.KEY_E)) circle.setRadius(radius -= 10);
 			if(circle.intersects(rect)) {
@@ -118,26 +108,28 @@ public class SimpleSlick extends BasicGame
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
 		if(!x.isNull()) {
-		x.draw();
-		//		Random rand = new Random();
-		//		Color random = new Color(rand.nextInt(), rand.nextInt(), rand.nextInt());
-		//		g.setColor(random);
-		//		g.fill(circle);
-		g.draw(circle);
-		g.draw(rect);
-		//		g.setColor(Color.white);
-		g.drawString(Float.toString(circle.getX()), 0, 10);
-		g.drawString(Float.toString(circle.getY()), 0, 25);
-		//		Random rand = new Random();
-		//		Color random = new Color(rand.nextInt(), rand.nextInt(), rand.nextInt());
-		//		g.setBackground(random);
+			x.draw();
+			g.draw(x.rect);
+			//		Random rand = new Random();
+			//		Color random = new Color(rand.nextInt(), rand.nextInt(), rand.nextInt());
+			//		g.setColor(random);
+			//		g.fill(circle);
+			g.draw(circle);
+			g.draw(rect);
+			//		g.setColor(Color.white);
+			g.drawString(Float.toString(circle.getX()), 0, 10);
+			g.drawString(Float.toString(circle.getY()), 0, 25);
+			g.drawString("Health: " + Integer.toString(x.returnHealth()), 0, 50);
+			//		Random rand = new Random();
+			//		Color random = new Color(rand.nextInt(), rand.nextInt(), rand.nextInt());
+			//		g.setBackground(random);
 		}
 		else {
 			g.draw(circle);
 			g.draw(rect);
 			g.drawString(Float.toString(circle.getX()), 0, 10);
 			g.drawString(Float.toString(circle.getY()), 0, 25);
-			}
+		}
 	}
 
 	public static void main(String[] args)

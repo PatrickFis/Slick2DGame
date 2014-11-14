@@ -1,6 +1,5 @@
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -20,6 +19,7 @@ public class Shooting extends BasicGame
 	int ypos;
 	double Cxpos;
 	double Cypos;
+	boolean fire;
 	public Shooting(String gamename)
 	{
 		super(gamename);
@@ -53,6 +53,10 @@ public class Shooting extends BasicGame
 		{
 			if(input.isKeyDown(input.KEY_SPACE))
 			{
+				fire = true;
+			}
+			if(fire == true)
+			{
 				bullet.setX(xpos += 1);
 			}
 		}
@@ -74,12 +78,13 @@ public class Shooting extends BasicGame
 		}
 		if(bullet != null)
 		{
-			if(input.isKeyDown(input.KEY_SPACE))
+			if(fire == true)
 			{
 				g.setColor(Color.green);
 				g.fill(bullet);
 				g.draw(bullet);
 			}
+
 		}
 		else{
 			g.setColor(Color.red);
